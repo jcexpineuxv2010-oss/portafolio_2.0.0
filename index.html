@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14152a">
+<meta name="description" content="Juan Carlos, estudiante de Desarrollo Web Full Stack. Proyectos, habilidades y contacto.">
+<title>Juan Carlos | jc.sft — Desarrollador Web Full Stack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="boot" aria-hidden="true"><pre id="bootlog"></pre></div>
+
+<header class="nav">
+  <a class="brand" href="#inicio" aria-label="jc.sft, inicio">jc.sft</a>
+  <nav aria-label="Principal">
+    <a href="#inicio">./inicio</a>
+    <a href="#sobre-mi">./sobre-mi</a>
+    <a href="#habilidades">./habilidades</a>
+    <a href="#proyectos">./proyectos</a>
+    <a href="#contacto">./contacto</a>
+  </nav>
+</header>
+
+<main>
+  <section id="inicio" class="hero">
+    <canvas id="c" aria-label="Logo jc.sft formado con fragmentos de código"></canvas>
+    <div class="hero-text">
+      <p class="cmd">whoami</p>
+      <h1>Juan Carlos</h1>
+      <p class="role"><span id="type">Estudiante de Desarrollo Web Full Stack</span><i class="cur">_</i></p>
+      <div class="cta">
+        <a class="btn" href="#proyectos">ver proyectos</a>
+        <a class="btn ghost" href="#contacto">contactar</a>
+      </div>
+    </div>
+    <div class="ticker">sys: <b>online</b> · stack: <b>html · css · js</b> · estudiando: <b>php · linux</b> · proyectos: <b>3</b></div>
+  </section>
+
+  <section id="sobre-mi" class="sec rv">
+    <p class="cmd">cat about.txt</p>
+    <h2>Sobre mí</h2>
+    <div class="grid2">
+      <div>
+        <p>Soy un estudiante y entusiasta de la informática orientado al desarrollo de software, la gestión de servidores y la resolución de problemas técnicos.</p>
+        <p>Actualizo constantemente mis conocimientos practicando y completando módulos de desarrollo web en <b class="y">freeCodeCamp</b>, además de explorar herramientas de automatización y administración de sistemas Linux.</p>
+      </div>
+      <div class="term">
+        <div class="bar"><i></i><i></i><i></i><span>jc — bash</span></div>
+<pre><span class="g">$</span> cat /etc/jc/status
+rol................. <span class="o">estudiante full stack</span>
+enfoque............. <span class="b">backend · frontend · sistemas</span>
+aprendiendo......... <span class="o">freeCodeCamp · linux</span>
+estado.............. <span class="c">disponible</span>
+<span class="g">$</span> <i class="cur">_</i></pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="habilidades" class="sec rv">
+    <p class="cmd">cat habilidades.json</p>
+    <h2>Habilidades técnicas</h2>
+    <div class="cards">
+      <article class="card"><h3 class="b">HTML5 &amp; CSS3</h3><p>Maquetación semántica y diseño responsivo.</p><span class="tag ok">3 proyectos</span></article>
+      <article class="card"><h3 class="y">JavaScript</h3><p>Lógica de cliente, manejo de DOM y Fetch API.</p><span class="tag ok">3 proyectos</span></article>
+      <article class="card"><h3 class="p">PHP / Backend</h3><p>Procesamiento de formularios y conexión a base de datos.</p><span class="tag">estudiando</span></article>
+      <article class="card"><h3 class="c">Linux &amp; Servidores</h3><p>Administración básica de servidores web y terminal.</p><span class="tag">estudiando</span></article>
+      <article class="card"><h3 class="o">Git &amp; GitHub</h3><p>Control de versiones y publicación con GitHub Pages.</p><span class="tag ok">3 proyectos</span></article>
+    </div>
+  </section>
+
+  <section id="proyectos" class="sec rv">
+    <p class="cmd">ls ~/proyectos</p>
+    <h2>Proyectos destacados</h2>
+    <div class="cards two">
+      <article class="card">
+        <p class="com">// proyecto 01</p>
+        <h3>Consultorio Psicológico Luz Ángeles</h3>
+        <p>Sitio web profesional para la gestión de servicios y contacto con pacientes, con diseño responsivo y estructura limpia.</p>
+        <p class="demo">cuenta admin de demostración<br>usuario: <span class="o">12345678</span><br>contraseña: <span class="o">12345678</span></p>
+        <p class="tags"><span>HTML5</span><span>CSS3</span><span>JavaScript</span></p>
+        <a class="btn" href="https://jcexpineuxv2010-oss.github.io/-luz-angeles-official-v2.00.0/" target="_blank" rel="noopener">ver proyecto →</a>
+      </article>
+      <article class="card">
+        <p class="com">// proyecto 02</p>
+        <h3>Resultados de Simulacros UNI</h3>
+        <p>Plataforma web interactiva para consultar y visualizar de forma dinámica puntajes y rendimientos en simulacros de admisión.</p>
+        <p class="demo">acceso admin de demostración<br><span class="com">// escríbeme y te lo comparto</span></p>
+        <p class="tags"><span>HTML5</span><span>CSS3</span><span>JavaScript</span></p>
+        <a class="btn" href="https://jcexpineuxv2010-oss.github.io/resultados-simulacros-uni-v2.0.00/" target="_blank" rel="noopener">ver proyecto →</a>
+      </article>
+      <article class="card wide">
+        <p class="com">// proyecto 03</p>
+        <h3>Mi portafolio</h3>
+        <p>Portafolio responsivo con formulario de contacto conectado a una API propia en Node.js y Express, que envía los mensajes por correo con Resend.</p>
+        <p class="tags"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Node.js</span></p>
+        <a class="btn" href="https://github.com/jcexpineuxv2010-oss/portafolio" target="_blank" rel="noopener">ver código →</a>
+      </article>
+    </div>
+  </section>
+
+  <section id="contacto" class="sec rv">
+    <p class="cmd">./contacto.sh</p>
+    <h2>Contacto</h2>
+    <p>¿Tienes alguna consulta o proyecto en mente? Escríbeme y lo conversamos.</p>
+    <form id="form" class="form" novalidate>
+      <label>nombre<input name="nombre" required autocomplete="name"></label>
+      <label>correo<input name="correo" type="email" required autocomplete="email"></label>
+      <label>mensaje<textarea name="mensaje" rows="5" required></textarea></label>
+      <button class="btn" type="submit">enviar mensaje</button>
+      <p id="msg" role="status"></p>
+    </form>
+    <p class="links"><a href="https://github.com/jcexpineuxv2010-oss" target="_blank" rel="noopener">github</a> · <a href="mailto:jc.espinozav.2010@gmail.com">jc.espinozav.2010@gmail.com</a></p>
+  </section>
+</main>
+
+<footer class="foot">© 2026 jc.sft · todos los derechos reservados<br><span class="com">// end of transmission</span></footer>
+<script src="script.js"></script>
+</body>
+</html>
