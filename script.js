@@ -56,18 +56,22 @@
     const dpr = Math.min(devicePixelRatio || 1, 2);
     W = cv.clientWidth; H = cv.clientHeight; lastW = innerWidth; lastH = innerHeight;
     cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    cell = W < 600 ? 7 : 9;
-    const cols = Math.floor(Math.min(W * 0.92, H * 0.62) / cell), rows = cols, k = 4;
+    cell = W < 600 ? 6 : 9;
+    const tTop = document.querySelector('.hero-text').offsetTop, CY = 66 + (tTop - 66) / 2;
+    document.querySelector('.hero').style.setProperty('--cy', CY + 'px');
+    const cols = Math.floor(Math.min(W * 0.92, Math.max(tTop - 78, 220)) / cell), rows = cols, k = 4;
     const o = document.createElement('canvas'); o.width = cols * k; o.height = rows * k;
     const g = o.getContext('2d'), N = o.width, c = N / 2;
     g.fillStyle = g.strokeStyle = '#fff';
     g.lineWidth = N * 0.03; g.beginPath(); g.arc(c, c, c - N * 0.02, 0, Math.PI * 2); g.stroke();
-    g.font = `700 ${N * 0.21}px "Source Serif 4",Georgia,serif`;
-    g.textAlign = 'center'; g.textBaseline = 'middle';
-    g.lineWidth = N * 0.01; g.lineJoin = 'round';
-    g.strokeText('jc.sft', c, c + N * 0.015); g.fillText('jc.sft', c, c + N * 0.015);
+    g.font = `700 ${N * 0.23}px "Source Serif 4",Georgia,serif`;
+    g.textAlign = 'left'; g.textBaseline = 'middle';
+    g.lineWidth = N * 0.008; g.lineJoin = 'round';
+    const chs = 'jc.sft'.split(''), gap = N * 0.045, ws = chs.map(ch => g.measureText(ch).width);
+    let x = c - (ws.reduce((a, b) => a + b, 0) + gap * (chs.length - 1)) / 2;
+    chs.forEach((ch, i) => { g.strokeText(ch, x, c + N * 0.015); g.fillText(ch, x, c + N * 0.015); x += ws[i] + gap; });
     const d = g.getImageData(0, 0, N, N).data;
-    const ox = (W - cols * cell) / 2, oy = (H - rows * cell) / 2 - H * 0.1;
+    const ox = (W - cols * cell) / 2, oy = CY - rows * cell / 2;
     parts = [];
     for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
       let a = 0;
@@ -79,10 +83,10 @@
       parts.push({
         tx, ty, x: reduce ? tx : rnd(0, W), y: reduce ? ty : rnd(-H * 0.3, H), vx: 0, vy: 0,
         ch: codeCh(q), cur: POOL[Math.floor(Math.random() * POOL.length)], col: COL[q], a, ring,
-        delay: reduce ? 0 : rnd(0.4, 3.2), ph: Math.random() * 6.28
+        delay: reduce ? 0 : rnd(0.2, 1.4), ph: Math.random() * 6.28
       });
     }
-    bg = Array.from({ length: Math.floor(W * H / 7000) }, () => ({ x: rnd(0, W), y: rnd(0, H), s: rnd(.15, .5), ch: POOL[Math.floor(Math.random() * POOL.length)], a: rnd(.05, .16) }));
+    bg = [];
     t0 = performance.now(); shown = false;
   }
 
@@ -101,10 +105,10 @@
     for (const p of parts) {
       if (t < p.delay) { p.y += Math.sin(t * 2 + p.ph) * .3 + .4; p.x += Math.cos(t * 1.5 + p.ph) * .3; }
       else {
-        p.vx += (p.tx - p.x) * 0.014; p.vy += (p.ty - p.y) * 0.014;
+        p.vx += (p.tx - p.x) * 0.024; p.vy += (p.ty - p.y) * 0.024;
         const mx = p.x - mouse.x, my = p.y - mouse.y, md = Math.hypot(mx, my);
         if (md < 70) { const f = (70 - md) / 70 * 2.2; p.vx += mx / md * f; p.vy += my / md * f; }
-        p.vx *= .88; p.vy *= .88; p.x += p.vx; p.y += p.vy;
+        p.vx *= .85; p.vy *= .85; p.x += p.vx; p.y += p.vy;
       }
       const near = Math.hypot(p.tx - p.x, p.ty - p.y) < cell * .6 && t > p.delay;
       if (near) {
@@ -159,4 +163,76 @@
       msg.textContent = '> mensaje enviado [ OK ]'; f.reset();
     } catch (err) { msg.textContent = '> error al enviar, intenta de nuevo o escríbeme por correo'; }
   });
+
+  /* ---------- Extras: progreso, nav activa, contadores, terminal ---------- */
+  const bar = $('#progress'), topBtn = $('#top');
+  const links = [...document.querySelectorAll('.nav nav a')], secs = links.map(a => document.querySelector(a.getAttribute('href')));
+  addEventListener('scroll', () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    bar.style.width = (max > 0 ? scrollY / max * 100 : 0) + '%';
+    topBtn.classList.toggle('on', scrollY > innerHeight * .6);
+    let cur = 0; secs.forEach((s, i) => { if (s && s.getBoundingClientRect().top < innerHeight * .4) cur = i; });
+    links.forEach((a, i) => a.classList.toggle('act', i === cur));
+  }, { passive: true });
+
+  const cio = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return; cio.unobserve(e.target);
+    const el = e.target, n = +el.dataset.count; if (reduce) return;
+    let v = 0; el.textContent = 0; const s = () => { el.textContent = ++v; if (v < n) setTimeout(s, 180); }; s();
+  }), { threshold: .6 });
+  document.querySelectorAll('[data-count]').forEach(el => cio.observe(el));
+
+  document.querySelectorAll('.card').forEach(c => c.addEventListener('pointermove', e => {
+    const r = c.getBoundingClientRect(); c.style.setProperty('--mx', e.clientX - r.left + 'px'); c.style.setProperty('--my', e.clientY - r.top + 'px');
+  }));
+
+  const CMD = {
+    help: 'comandos: whoami · skills · projects · contact · github · clear',
+    whoami: 'Juan Carlos — estudiante de Desarrollo Web Full Stack',
+    skills: 'html5 · css3 · javascript · node.js · git  (estudiando: php, linux)',
+    projects: '1) consultorio luz ángeles  2) simulacros uni  3) mi portafolio',
+    contact: EMAIL,
+    github: 'github.com/jcexpineuxv2010-oss'
+  };
+  const out = $('#out'), inp = $('#shin');
+  $('#sh').addEventListener('submit', e => {
+    e.preventDefault(); const v = inp.value.trim().toLowerCase(); inp.value = ''; if (!v) return;
+    if (v === 'clear') { out.textContent = ''; return; }
+    let r = CMD[v] || `comando no encontrado: ${v} (prueba help)`;
+    if (v === 'sudo hire jc') { r = '[ OK ] permiso concedido. te llevo a ./contacto ...'; setTimeout(() => { location.hash = '#contacto'; }, 900); }
+    out.textContent += `$ ${v}\n${r}\n`; out.scrollTop = out.scrollHeight;
+  });
+  $('#copy').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(EMAIL); $('#msg').textContent = '> correo copiado [ OK ]'; }
+    catch (e) { $('#msg').textContent = '> ' + EMAIL; }
+  });
+
+  /* ---------- Lluvia de código en toda la web (colores de VS Code) ---------- */
+  const rc = $('#rain'), rx = rc.getContext('2d');
+  let RW, RH, drops = [];
+  function rainSize() {
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    RW = innerWidth; RH = innerHeight; rc.width = RW * dpr; rc.height = RH * dpr; rx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function rainInit() {
+    rainSize();
+    const n = Math.min(170, Math.floor(RW * RH / 6500));
+    drops = Array.from({ length: n }, () => ({ x: rnd(0, RW), y: rnd(0, RH), s: reduce ? 0 : rnd(.2, .7), sz: rnd(10, 17), a: rnd(.1, .32), q: Math.floor(Math.random() * CODE.length), ph: rnd(0, 6.28) }));
+  }
+  function rainDraw(now) {
+    rx.clearRect(0, 0, RW, RH); rx.textAlign = 'center'; rx.textBaseline = 'middle';
+    for (const d of drops) {
+      d.y += d.s; d.x += Math.sin(now / 1500 + d.ph) * (reduce ? 0 : .12);
+      if (d.y > RH + 14) { d.y = -14; d.x = rnd(0, RW); }
+      if (!reduce && Math.random() < .006) d.q = Math.floor(Math.random() * CODE.length);
+      rx.font = `500 ${d.sz}px "JetBrains Mono",ui-monospace,monospace`;
+      rx.fillStyle = COL[d.q]; rx.globalAlpha = d.a; rx.fillText(codeCh(d.q), d.x, d.y);
+    }
+    rx.globalAlpha = 1;
+  }
+  function rainLoop(now) { requestAnimationFrame(rainLoop); if (!document.hidden) rainDraw(now); }
+  rainInit();
+  if (reduce) rainDraw(0); else requestAnimationFrame(rainLoop);
+  let rw = innerWidth;
+  addEventListener('resize', () => { if (Math.abs(innerWidth - rw) > 80) { rw = innerWidth; rainInit(); } else rainSize(); });
 })();
