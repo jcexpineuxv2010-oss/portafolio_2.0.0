@@ -5,13 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#14152a">
 <meta name="description" content="Juan Carlos, estudiante de Desarrollo Web Full Stack. Proyectos, habilidades y contacto.">
-<title>Juan Carlos | jc.sft — Desarrollador Web Full Stack</title>
+<title>JC | jc.sft - Estudiante de Diseño y Desarrollo de Software</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='28' fill='%2314152a' stroke='%23569cd6' stroke-width='5'/><text x='32' y='40' font-size='22' text-anchor='middle' fill='white' font-family='Georgia' font-weight='700'>jc</text></svg>">
+<meta property="og:title" content="JC | jc.sft - Estudiante de Diseño y Desarrollo de Software">
+<meta property="og:description" content="Proyectos, habilidades y contacto.">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@700&family=JetBrains+Mono:wght@400;500;700&display=swap">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<canvas id="rain" aria-hidden="true"></canvas>
 <div id="boot" aria-hidden="true"><pre id="bootlog"></pre></div>
+<div id="progress"></div>
+<a id="top" href="#inicio" aria-label="Volver arriba">↑</a>
 
 <header class="nav">
   <a class="brand" href="#inicio" aria-label="jc.sft, inicio">jc.sft</a>
@@ -29,8 +36,8 @@
     <canvas id="c" aria-label="Logo jc.sft formado con fragmentos de código"></canvas>
     <div class="hero-text">
       <p class="cmd">whoami</p>
-      <h1>Juan Carlos</h1>
-      <p class="role"><span id="type">Estudiante de Desarrollo Web Full Stack</span><i class="cur">_</i></p>
+      <h1>JC</h1>
+      <p class="role"><span id="type">  Estudiante de Diseño y Desarrollo de Software</span><i class="cur">_</i></p>
       <div class="cta">
         <a class="btn" href="#proyectos">ver proyectos</a>
         <a class="btn ghost" href="#contacto">contactar</a>
@@ -39,13 +46,15 @@
     <div class="ticker">sys: <b>online</b> · stack: <b>html · css · js</b> · estudiando: <b>php · linux</b> · proyectos: <b>3</b></div>
   </section>
 
+  <div class="marquee" aria-label="Tecnologías"><div class="track"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Node.js</span><span>Express</span><span>Git</span><span>GitHub Pages</span><span>Resend</span><span>PHP</span><span>Linux</span><span>freeCodeCamp</span><span aria-hidden="true"></span><span aria-hidden="true">HTML5</span><span aria-hidden="true">CSS3</span><span aria-hidden="true">JavaScript</span><span aria-hidden="true">Node.js</span><span aria-hidden="true">Express</span><span aria-hidden="true">Git</span><span aria-hidden="true">GitHub Pages</span><span aria-hidden="true">Resend</span><span aria-hidden="true">PHP</span><span aria-hidden="true">Linux</span><span aria-hidden="true">freeCodeCamp</span></div></div>
+
   <section id="sobre-mi" class="sec rv">
     <p class="cmd">cat about.txt</p>
     <h2>Sobre mí</h2>
     <div class="grid2">
       <div>
         <p>Soy un estudiante y entusiasta de la informática orientado al desarrollo de software, la gestión de servidores y la resolución de problemas técnicos.</p>
-        <p>Actualizo constantemente mis conocimientos practicando y completando módulos de desarrollo web en <b class="y">freeCodeCamp</b>, además de explorar herramientas de automatización y administración de sistemas Linux.</p>
+        <p>Actualizo constantemente mis conocimientos pract<icando y completando módulos de desarrollo web en <b class="y">freeCodeCamp</b>, además de explorar herramientas de automatización y administración de sistemas Linux.</p>
       </div>
       <div class="term">
         <div class="bar"><i></i><i></i><i></i><span>jc — bash</span></div>
@@ -54,8 +63,16 @@ rol................. <span class="o">estudiante full stack</span>
 enfoque............. <span class="b">backend · frontend · sistemas</span>
 aprendiendo......... <span class="o">freeCodeCamp · linux</span>
 estado.............. <span class="c">disponible</span>
-<span class="g">$</span> <i class="cur">_</i></pre>
+</pre>
+        <pre id="out">escribe help y pulsa enter ↵</pre>
+        <form id="sh" class="sh"><span class="g">$</span><input id="shin" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal interactiva"></form>
       </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b data-count="3">3</b><span>proyectos publicados</span></div>
+      <div class="stat"><b data-count="5">5</b><span>tecnologías en uso</span></div>
+      <div class="stat"><b data-count="2">2</b><span>en estudio</span></div>
+      <div class="stat"><b>∞</b><span>ganas de aprender</span></div>
     </div>
   </section>
 
@@ -68,6 +85,19 @@ estado.............. <span class="c">disponible</span>
       <article class="card"><h3 class="p">PHP / Backend</h3><p>Procesamiento de formularios y conexión a base de datos.</p><span class="tag">estudiando</span></article>
       <article class="card"><h3 class="c">Linux &amp; Servidores</h3><p>Administración básica de servidores web y terminal.</p><span class="tag">estudiando</span></article>
       <article class="card"><h3 class="o">Git &amp; GitHub</h3><p>Control de versiones y publicación con GitHub Pages.</p><span class="tag ok">3 proyectos</span></article>
+    </div>
+  </section>
+
+  <section id="camino" class="sec rv">
+    <p class="cmd">git log --oneline</p>
+    <h2>Mi camino</h2>
+    <div class="log">
+      <div><span class="h">e5b3a61</span> <span class="head">(HEAD → main)</span> <span class="w">wip:</span> Linux &amp; servidores — terminal y administración de servidores web</div>
+      <div><span class="h">d40a7f2</span> <span class="w">wip:</span> PHP / backend — formularios y conexión a base de datos</div>
+      <div><span class="h">c9e18bd</span> <span class="f">feat:</span> API propia con Node.js + Express y Resend para el formulario de contacto</div>
+      <div><span class="h">b72d04a</span> <span class="f">feat:</span> JavaScript — DOM y Fetch API en 3 proyectos</div>
+      <div><span class="h">a1f3c9e</span> <span class="f">feat:</span> HTML5 &amp; CSS3 — maquetación semántica y diseño responsivo</div>
+      <div><span class="h">0000000</span> <span class="head">init:</span> empiezo a aprender desarrollo web con freeCodeCamp</div>
     </div>
   </section>
 
@@ -112,11 +142,11 @@ estado.............. <span class="c">disponible</span>
       <button class="btn" type="submit">enviar mensaje</button>
       <p id="msg" role="status"></p>
     </form>
-    <p class="links"><a href="https://github.com/jcexpineuxv2010-oss" target="_blank" rel="noopener">github</a> · <a href="mailto:jc.espinozav.2010@gmail.com">jc.espinozav.2010@gmail.com</a></p>
+    <p class="links"><button class="btn ghost" id="copy" type="button">copiar correo</button> <a href="https://github.com/jcexpineuxv2010-oss" target="_blank" rel="noopener">github</a> · <a href="mailto:jc.espinozav.2010@gmail.com">jc.espinozav.2010@gmail.com</a></p>
   </section>
 </main>
 
-<footer class="foot">© 2026 jc.sft · todos los derechos reservados<br><span class="com">// end of transmission</span></footer>
+<footer class="foot"><p class="soc"><a href="https://github.com/jcexpineuxv2010-oss" target="_blank" rel="noopener">github</a><a href="mailto:jc.espinozav.2010@gmail.com">correo</a><a href="#inicio">volver arriba ↑</a></p>© 2026 jc.sft · todos los derechos reservados<br><span class="com">// end of transmission</span></footer>
 <script src="script.js"></script>
 </body>
 </html>
