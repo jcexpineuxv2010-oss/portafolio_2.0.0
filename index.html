@@ -11,10 +11,13 @@
 <meta property="og:description" content="Proyectos, habilidades y contacto.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@700&family=JetBrains+Mono:wght@400;500;700&display=swap">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a class="skip" href="#main">Saltar al contenido</a>
 <canvas id="rain" aria-hidden="true"></canvas>
 <div id="boot" aria-hidden="true"><pre id="bootlog"></pre></div>
 <div id="progress"></div>
@@ -26,14 +29,17 @@
     <a href="#inicio">./inicio</a>
     <a href="#sobre-mi">./sobre-mi</a>
     <a href="#habilidades">./habilidades</a>
+    <a href="#camino">./camino</a>
     <a href="#proyectos">./proyectos</a>
+    <a href="#actualizaciones">./actualizaciones</a>
     <a href="#contacto">./contacto</a>
+    <a href="#documentos">./legal</a>
   </nav>
 </header>
 
-<main>
+<main id="main">
   <section id="inicio" class="hero">
-    <canvas id="c" aria-label="Logo jc.sft formado con fragmentos de código"></canvas>
+    <canvas id="c" role="img" aria-label="Logo jc.sft formado con fragmentos de código"></canvas>
     <div class="hero-text">
       <p class="cmd">whoami</p>
       <h1>JC</h1>
@@ -46,7 +52,7 @@
     <div class="ticker">sys: <b>online</b> · stack: <b>html · css · js</b> · estudiando: <b>php · linux</b> · proyectos: <b>3</b></div>
   </section>
 
-  <div class="marquee" aria-label="Tecnologías"><div class="track"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Node.js</span><span>Express</span><span>Git</span><span>GitHub Pages</span><span>Resend</span><span>PHP</span><span>Linux</span><span>freeCodeCamp</span><span aria-hidden="true"></span><span aria-hidden="true">HTML5</span><span aria-hidden="true">CSS3</span><span aria-hidden="true">JavaScript</span><span aria-hidden="true">Node.js</span><span aria-hidden="true">Express</span><span aria-hidden="true">Git</span><span aria-hidden="true">GitHub Pages</span><span aria-hidden="true">Resend</span><span aria-hidden="true">PHP</span><span aria-hidden="true">Linux</span><span aria-hidden="true">freeCodeCamp</span></div></div>
+  <div class="marquee" aria-label="Tecnologías"><div class="track"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Node.js</span><span>Express</span><span>Git</span><span>GitHub Pages</span><span>Resend</span><span>PHP</span><span>Linux</span><span>freeCodeCamp</span><span aria-hidden="true">HTML5</span><span aria-hidden="true">CSS3</span><span aria-hidden="true">JavaScript</span><span aria-hidden="true">Node.js</span><span aria-hidden="true">Express</span><span aria-hidden="true">Git</span><span aria-hidden="true">GitHub Pages</span><span aria-hidden="true">Resend</span><span aria-hidden="true">PHP</span><span aria-hidden="true">Linux</span><span aria-hidden="true">freeCodeCamp</span></div></div>
 
   <section id="sobre-mi" class="sec rv">
     <p class="cmd">cat about.txt</p>
@@ -54,7 +60,7 @@
     <div class="grid2">
       <div>
         <p>Soy un estudiante y entusiasta de la informática orientado al desarrollo de software, la gestión de servidores y la resolución de problemas técnicos.</p>
-        <p>Actualizo constantemente mis conocimientos pract<icando y completando módulos de desarrollo web en <b class="y">freeCodeCamp</b>, además de explorar herramientas de automatización y administración de sistemas Linux.</p>
+        <p>Actualizo constantemente mis conocimientos practicando y completando módulos de desarrollo web en <b class="y">freeCodeCamp</b>, además de explorar herramientas de automatización y administración de sistemas Linux.</p>
       </div>
       <div class="term">
         <div class="bar"><i></i><i></i><i></i><span>jc — bash</span></div>
@@ -126,8 +132,20 @@ estado.............. <span class="c">disponible</span>
         <h3>Mi portafolio</h3>
         <p>Portafolio responsivo con formulario de contacto conectado a una API propia en Node.js y Express, que envía los mensajes por correo con Resend.</p>
         <p class="tags"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Node.js</span></p>
-        <a class="btn" href="https://github.com/jcexpineuxv2010-oss/portafolio" target="_blank" rel="noopener">ver código →</a>
+        <a class="btn" href="https://github.com/jcexpineuxv2010-oss/portafolio_2.0.0" target="_blank" rel="noopener">ver código →</a>
       </article>
+    </div>
+  </section>
+
+  <section id="actualizaciones" class="sec rv">
+    <p class="cmd">cat CHANGELOG.md</p>
+    <h2>Actualizaciones</h2>
+    <p>Lo que voy mejorando en este portafolio. Lo más reciente primero.</p>
+    <div class="rels">
+      <details class="rel" open><summary><span class="ver">v2.3.0</span><span class="latest">última</span><span class="date">nov 2026</span></summary><ul><li><span class="k new">nuevo</span><span>Páginas de términos y condiciones y de política de privacidad.</span></li><li><span class="k new">nuevo</span><span>Footer renovado con navegación, proyectos y contacto.</span></li><li><span class="k new">nuevo</span><span>Sección de actualizaciones (esta).</span></li><li><span class="k imp">mejora</span><span>Aviso al volver a la pestaña y menú que marca la sección activa hasta el final.</span></li></ul></details>
+      <details class="rel"><summary><span class="ver">v2.2.0</span><span class="date">nov 2026</span></summary><ul><li><span class="k imp">mejora</span><span>Diseño adaptado a celular: menú deslizable, portada y formularios sin zoom en iPhone.</span></li><li><span class="k imp">mejora</span><span>Textos justificados en todos los dispositivos.</span></li><li><span class="k imp">mejora</span><span>Accesibilidad: enlace «saltar al contenido» y foco visible.</span></li></ul></details>
+      <details class="rel"><summary><span class="ver">v2.1.0</span><span class="date">nov 2026</span></summary><ul><li><span class="k new">nuevo</span><span>Terminal interactiva con historial (↑ ↓) y los comandos ls, pwd y updates.</span></li><li><span class="k new">nuevo</span><span>Sección «Mi camino» en el menú.</span></li><li><span class="k fix">arreglo</span><span>Etiqueta rota en «Sobre mí» y envío doble del formulario.</span></li></ul></details>
+      <details class="rel"><summary><span class="ver">v2.0.0</span><span class="date">nov 2026</span></summary><ul><li><span class="k new">nuevo</span><span>Portafolio con logo de código animado, lluvia de código, proyectos y formulario de contacto.</span></li></ul></details>
     </div>
   </section>
 
@@ -136,17 +154,59 @@ estado.............. <span class="c">disponible</span>
     <h2>Contacto</h2>
     <p>¿Tienes alguna consulta o proyecto en mente? Escríbeme y lo conversamos.</p>
     <form id="form" class="form" novalidate>
-      <label>nombre<input name="nombre" required autocomplete="name"></label>
+      <label>nombre<input name="nombre" required maxlength="80" autocomplete="name"></label>
       <label>correo<input name="correo" type="email" required autocomplete="email"></label>
-      <label>mensaje<textarea name="mensaje" rows="5" required></textarea></label>
+      <label>mensaje<textarea name="mensaje" rows="5" required maxlength="2000"></textarea></label>
+      <p class="note">Al enviar el formulario aceptas la <a href="privacidad.html">política de privacidad</a>.</p>
       <button class="btn" type="submit">enviar mensaje</button>
       <p id="msg" role="status"></p>
     </form>
-    <p class="links"><button class="btn ghost" id="copy" type="button">copiar correo</button> <a href="https://github.com/jcexpineuxv2010-oss" target="_blank" rel="noopener">github</a> · <a href="mailto:jc.espinozav.2010@gmail.com">jc.espinozav.2010@gmail.com</a></p>
+    <p class="links"><button class="btn ghost" id="copy" type="button">copiar correo</button> <a href="https://github.com/jcexpineuxv2010-oss" target="_blank" rel="noopener">github</a> · <a href="https://mail.google.com/mail/?view=cm&amp;to=jc.sft.contac@gmail.com" target="_blank" rel="noopener">jc.sft.contac@gmail.com</a></p>
   </section>
 </main>
 
-<footer class="foot"><p class="soc"><a href="https://github.com/jcexpineuxv2010-oss" target="_blank" rel="noopener">github</a><a href="mailto:jc.espinozav.2010@gmail.com">correo</a><a href="#inicio">volver arriba ↑</a></p>© 2026 jc.sft · todos los derechos reservados<br><span class="com">// end of transmission</span></footer>
+<footer id="documentos" class="foot">
+  <div class="foot-in">
+    <div class="foot-brand">
+      <a class="brand" href="#inicio" aria-label="jc.sft, inicio">jc.sft</a>
+      <p>Estudiante de Diseño y Desarrollo de Software. Aprendo creando proyectos web, practicando backend y administrando sistemas Linux.</p>
+      <p class="foot-soc">
+        <a href="https://github.com/jcexpineuxv2010-oss" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+        <a href="https://mail.google.com/mail/?view=cm&amp;to=jc.sft.contac@gmail.com" target="_blank" aria-label="Correo"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
+      </p>
+    </div>
+    <div class="foot-cols">
+      <nav aria-label="Secciones">
+        <h4>navegación</h4>
+        <a href="#inicio">Inicio</a>
+        <a href="#sobre-mi">Sobre mí</a>
+        <a href="#habilidades">Habilidades</a>
+        <a href="#camino">Mi camino</a>
+        <a href="#proyectos">Proyectos</a>
+        <a href="#actualizaciones">Actualizaciones</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+      <nav aria-label="Proyectos">
+        <h4>proyectos</h4>
+        <a href="https://jcexpineuxv2010-oss.github.io/-luz-angeles-official-v2.00.0/" target="_blank" rel="noopener">Consultorio Luz Ángeles</a>
+        <a href="https://jcexpineuxv2010-oss.github.io/resultados-simulacros-uni-v2.0.00/" target="_blank" rel="noopener">Simulacros UNI</a>
+        <a href="https://github.com/jcexpineuxv2010-oss/portafolio_2.0.0" target="_blank" rel="noopener">Mi portafolio</a>
+      </nav>
+      <nav aria-label="Contacto">
+        <h4>contacto</h4>
+        <a href="https://mail.google.com/mail/?view=cm&amp;to=jc.sft.contac@gmail.com" target="_blank" rel="noopener">Correo</a>
+        <a href="https://github.com/jcexpineuxv2010-oss" target="_blank" rel="noopener">GitHub</a>
+        <a href="#contacto">Formulario</a>
+      </nav>
+    </div>
+  </div>
+  <div class="foot-bar">
+    <span>© 2026 jc.sft · todos los derechos reservados</span>
+    <span class="foot-legal"><a href="terminos.html">Términos y condiciones</a> · <a href="privacidad.html">Política de privacidad</a></span>
+    <a href="#inicio">volver arriba ↑</a>
+  </div>
+  <p class="foot-end">// end of transmission</p>
+</footer>
 <script src="script.js"></script>
 </body>
 </html>
