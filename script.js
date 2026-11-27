@@ -1,238 +1,548 @@
 (() => {
-  document.documentElement.classList.add('js');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const $ = s => document.querySelector(s);
+  document.documentElement.classList.add("js");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const $ = (s) => document.querySelector(s);
   const rnd = (a, b) => a + Math.random() * (b - a);
 
   /* ---------- Código con colores de VS Code (Dark+) ---------- */
-  const POOL = '0123456789abcdef{}<>/;=()[]$_.λ';
-  const CODE = 'const x=await fetch(api);if(err){throw new Error(0x1F)}for(let i=0;i<n;i++){arr.push(i*2)}function init(){return()=>{}}import{sft}from"./jc";git commit -m"ship";npm run build;<div class="app">0xFF 0xA3 SELECT * FROM dev;export default{id:0x7B,ok:true}';
-  const codeCh = i => { const c = CODE[i % CODE.length]; return c === ' ' ? ';' : c; };
+  const POOL = "0123456789abcdef{}<>/;=()[]$_.λ";
+  const CODE =
+    'const x=await fetch(api);if(err){throw new Error(0x1F)}for(let i=0;i<n;i++){arr.push(i*2)}function init(){return()=>{}}import{sft}from"./jc";git commit -m"ship";npm run build;<div class="app">0xFF 0xA3 SELECT * FROM dev;export default{id:0x7B,ok:true}';
+  const codeCh = (i) => {
+    const c = CODE[i % CODE.length];
+    return c === " " ? ";" : c;
+  };
   const COL = (() => {
-    const a = new Array(CODE.length).fill('#9cdcfe');
+    const a = new Array(CODE.length).fill("#9cdcfe");
     const paint = (re, c, g = 0) => {
       let m;
       while ((m = re.exec(CODE))) {
-        const s = m.index + (g ? m[0].indexOf(m[g]) : 0), l = g ? m[g].length : m[0].length;
+        const s = m.index + (g ? m[0].indexOf(m[g]) : 0),
+          l = g ? m[g].length : m[0].length;
         for (let k = s; k < s + l; k++) a[k] = c;
       }
     };
-    paint(/[{}()\[\];=<>*+\-:.,]/g, '#d4d4d4');
-    paint(/\b0x[0-9A-Fa-f]+\b|\b\d+\b/g, '#b5cea8');
-    paint(/\b([A-Za-z_]\w*)\(/g, '#dcdcaa', 1);
-    paint(/\b(const|let|function|return|import|from|export|default|new|git|npm|SELECT|FROM|true)\b/g, '#569cd6');
-    paint(/\b(if|for|await|throw)\b/g, '#c586c0');
-    paint(/"[^"]*"/g, '#ce9178');
+    paint(/[{}()\[\];=<>*+\-:.,]/g, "#d4d4d4");
+    paint(/\b0x[0-9A-Fa-f]+\b|\b\d+\b/g, "#b5cea8");
+    paint(/\b([A-Za-z_]\w*)\(/g, "#dcdcaa", 1);
+    paint(
+      /\b(const|let|function|return|import|from|export|default|new|git|npm|SELECT|FROM|true)\b/g,
+      "#569cd6",
+    );
+    paint(/\b(if|for|await|throw)\b/g, "#c586c0");
+    paint(/"[^"]*"/g, "#ce9178");
     return a;
   })();
 
   /* ---------- Intro de arranque (estilo terminal) ---------- */
-  const LINES = ['> init jc.sft.sys', '> montando /portafolio ....... [ OK ]', '> cargando módulos ......... [ OK ]', '> acceso concedido_'];
+  const LINES = [
+    "> init jc.sft.sys",
+    "> montando /portafolio ....... [ OK ]",
+    "> cargando módulos ......... [ OK ]",
+    "> acceso concedido_",
+  ];
   function boot() {
-    return new Promise(res => {
-      const el = $('#boot'), log = $('#bootlog');
-      let i = 0, done = false;
-      try { if (sessionStorage.getItem('jc-boot')) i = 99; } catch (e) {}
-      if (reduce) { el.remove(); return res(); }
+    return new Promise((res) => {
+      const el = $("#boot"),
+        log = $("#bootlog");
+      let i = 0,
+        done = false;
+      try {
+        if (sessionStorage.getItem("jc-boot")) i = 99;
+      } catch (e) {}
+      if (reduce) {
+        el.remove();
+        return res();
+      }
       const finish = () => {
-        if (done) return; done = true;
-        try { sessionStorage.setItem('jc-boot', '1'); } catch (e) {}
-        el.classList.add('off'); setTimeout(() => el.remove(), 700); res();
+        if (done) return;
+        done = true;
+        try {
+          sessionStorage.setItem("jc-boot", "1");
+        } catch (e) {}
+        el.classList.add("off");
+        setTimeout(() => el.remove(), 700);
+        res();
       };
       const step = () => {
-        if (i < LINES.length) { log.textContent += LINES[i++] + '\n'; setTimeout(step, 380); }
-        else setTimeout(finish, i === 99 ? 0 : 450);
+        if (i < LINES.length) {
+          log.textContent += LINES[i++] + "\n";
+          setTimeout(step, 380);
+        } else setTimeout(finish, i === 99 ? 0 : 450);
       };
-      el.addEventListener('click', () => { i = 99; finish(); });
+      el.addEventListener("click", () => {
+        i = 99;
+        finish();
+      });
       step();
     });
   }
 
   /* ---------- Logo formado con partículas de código ---------- */
-  const cv = $('#c'), ctx = cv.getContext('2d');
-  let W, H, cell, parts = [], bg = [], mouse = { x: -999, y: -999 }, t0 = 0, visible = true, shown = false, lastW = 0, lastH = 0;
+  const cv = $("#c"),
+    ctx = cv.getContext("2d");
+  let W,
+    H,
+    cell,
+    parts = [],
+    bg = [],
+    mouse = { x: -999, y: -999 },
+    t0 = 0,
+    visible = true,
+    shown = false,
+    lastW = 0,
+    lastH = 0;
 
   function build() {
     const dpr = Math.min(devicePixelRatio || 1, 2);
-    W = cv.clientWidth; H = cv.clientHeight; lastW = innerWidth; lastH = innerHeight;
-    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    W = cv.clientWidth;
+    H = cv.clientHeight;
+    lastW = innerWidth;
+    lastH = innerHeight;
+    cv.width = W * dpr;
+    cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     cell = W < 600 ? 6 : 9;
-    const tTop = document.querySelector('.hero-text').offsetTop, CY = 66 + (tTop - 66) / 2;
-    document.querySelector('.hero').style.setProperty('--cy', CY + 'px');
-    const cols = Math.floor(Math.min(W * 0.92, Math.max(tTop - 78, 220)) / cell), rows = cols, k = 4;
-    const o = document.createElement('canvas'); o.width = cols * k; o.height = rows * k;
-    const g = o.getContext('2d'), N = o.width, c = N / 2;
-    g.fillStyle = g.strokeStyle = '#fff';
-    g.lineWidth = N * 0.03; g.beginPath(); g.arc(c, c, c - N * 0.02, 0, Math.PI * 2); g.stroke();
+    const tTop = document.querySelector(".hero-text").offsetTop,
+      CY = 66 + (tTop - 66) / 2;
+    document.querySelector(".hero").style.setProperty("--cy", CY + "px");
+    const cols = Math.floor(
+        Math.min(W * 0.92, Math.max(tTop - 78, 220)) / cell,
+      ),
+      rows = cols,
+      k = 4;
+    const o = document.createElement("canvas");
+    o.width = cols * k;
+    o.height = rows * k;
+    const g = o.getContext("2d"),
+      N = o.width,
+      c = N / 2;
+    g.fillStyle = g.strokeStyle = "#fff";
+    g.lineWidth = N * 0.03;
+    g.beginPath();
+    g.arc(c, c, c - N * 0.02, 0, Math.PI * 2);
+    g.stroke();
     g.font = `700 ${N * 0.23}px "Source Serif 4",Georgia,serif`;
-    g.textAlign = 'left'; g.textBaseline = 'middle';
-    g.lineWidth = N * 0.008; g.lineJoin = 'round';
-    const chs = 'jc.sft'.split(''), gap = N * 0.045, ws = chs.map(ch => g.measureText(ch).width);
+    g.textAlign = "left";
+    g.textBaseline = "middle";
+    g.lineWidth = N * 0.008;
+    g.lineJoin = "round";
+    const chs = "jc.sft".split(""),
+      gap = N * 0.045,
+      ws = chs.map((ch) => g.measureText(ch).width);
     let x = c - (ws.reduce((a, b) => a + b, 0) + gap * (chs.length - 1)) / 2;
-    chs.forEach((ch, i) => { g.strokeText(ch, x, c + N * 0.015); g.fillText(ch, x, c + N * 0.015); x += ws[i] + gap; });
+    chs.forEach((ch, i) => {
+      g.strokeText(ch, x, c + N * 0.015);
+      g.fillText(ch, x, c + N * 0.015);
+      x += ws[i] + gap;
+    });
     const d = g.getImageData(0, 0, N, N).data;
-    const ox = (W - cols * cell) / 2, oy = CY - rows * cell / 2;
+    const ox = (W - cols * cell) / 2,
+      oy = CY - (rows * cell) / 2;
     parts = [];
-    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
-      let a = 0;
-      for (let y = 0; y < k; y++) for (let x = 0; x < k; x++) a += d[((j * k + y) * N + i * k + x) * 4 + 3];
-      a /= 255 * k * k;
-      if (a < .25) continue;
-      const ring = Math.hypot(i - cols / 2, j - rows / 2) > cols * 0.4;
-      const tx = ox + i * cell + cell / 2, ty = oy + j * cell + cell / 2, q = (j * 53 + i) % CODE.length;
-      parts.push({
-        tx, ty, x: reduce ? tx : rnd(0, W), y: reduce ? ty : rnd(-H * 0.3, H), vx: 0, vy: 0,
-        ch: codeCh(q), cur: POOL[Math.floor(Math.random() * POOL.length)], col: COL[q], a, ring,
-        delay: reduce ? 0 : rnd(0.2, 1.4), ph: Math.random() * 6.28
-      });
-    }
+    for (let j = 0; j < rows; j++)
+      for (let i = 0; i < cols; i++) {
+        let a = 0;
+        for (let y = 0; y < k; y++)
+          for (let x = 0; x < k; x++)
+            a += d[((j * k + y) * N + i * k + x) * 4 + 3];
+        a /= 255 * k * k;
+        if (a < 0.25) continue;
+        const ring = Math.hypot(i - cols / 2, j - rows / 2) > cols * 0.4;
+        const tx = ox + i * cell + cell / 2,
+          ty = oy + j * cell + cell / 2,
+          q = (j * 53 + i) % CODE.length;
+        parts.push({
+          tx,
+          ty,
+          x: reduce ? tx : rnd(0, W),
+          y: reduce ? ty : rnd(-H * 0.3, H),
+          vx: 0,
+          vy: 0,
+          ch: codeCh(q),
+          cur: POOL[Math.floor(Math.random() * POOL.length)],
+          col: COL[q],
+          a,
+          ring,
+          delay: reduce ? 0 : rnd(0.2, 1.4),
+          ph: Math.random() * 6.28,
+        });
+      }
     bg = [];
-    t0 = performance.now(); shown = false;
+    t0 = performance.now();
+    shown = false;
   }
 
   function frame(now) {
     requestAnimationFrame(frame);
-    if (!visible) return;
+    if (!visible || document.hidden) return;
     const t = (now - t0) / 1000;
     ctx.clearRect(0, 0, W, H);
     ctx.font = `500 ${cell * 1.2}px "JetBrains Mono",ui-monospace,monospace`;
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillStyle = '#6a9955';
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "#6a9955";
     for (const b of bg) {
-      b.y -= b.s; if (b.y < -10) { b.y = H + 10; b.x = rnd(0, W); }
-      ctx.globalAlpha = b.a; ctx.fillText(b.ch, b.x, b.y);
+      b.y -= b.s;
+      if (b.y < -10) {
+        b.y = H + 10;
+        b.x = rnd(0, W);
+      }
+      ctx.globalAlpha = b.a;
+      ctx.fillText(b.ch, b.x, b.y);
     }
     for (const p of parts) {
-      if (t < p.delay) { p.y += Math.sin(t * 2 + p.ph) * .3 + .4; p.x += Math.cos(t * 1.5 + p.ph) * .3; }
-      else {
-        p.vx += (p.tx - p.x) * 0.024; p.vy += (p.ty - p.y) * 0.024;
-        const mx = p.x - mouse.x, my = p.y - mouse.y, md = Math.hypot(mx, my);
-        if (md < 70) { const f = (70 - md) / 70 * 2.2; p.vx += mx / md * f; p.vy += my / md * f; }
-        p.vx *= .85; p.vy *= .85; p.x += p.vx; p.y += p.vy;
+      if (t < p.delay) {
+        p.y += Math.sin(t * 2 + p.ph) * 0.3 + 0.4;
+        p.x += Math.cos(t * 1.5 + p.ph) * 0.3;
+      } else {
+        p.vx += (p.tx - p.x) * 0.024;
+        p.vy += (p.ty - p.y) * 0.024;
+        const mx = p.x - mouse.x,
+          my = p.y - mouse.y,
+          md = Math.hypot(mx, my);
+        if (md < 70) {
+          const f = ((70 - md) / 70) * 2.2;
+          p.vx += (mx / md) * f;
+          p.vy += (my / md) * f;
+        }
+        p.vx *= 0.85;
+        p.vy *= 0.85;
+        p.x += p.vx;
+        p.y += p.vy;
       }
-      const near = Math.hypot(p.tx - p.x, p.ty - p.y) < cell * .6 && t > p.delay;
+      const near =
+        Math.hypot(p.tx - p.x, p.ty - p.y) < cell * 0.6 && t > p.delay;
       if (near) {
-        if (Math.random() < .004) { const q = Math.floor(Math.random() * CODE.length); p.ch = codeCh(q); p.col = COL[q]; }
-      } else if (Math.random() < .08) p.cur = POOL[Math.floor(Math.random() * POOL.length)];
+        if (Math.random() < 0.004) {
+          const q = Math.floor(Math.random() * CODE.length);
+          p.ch = codeCh(q);
+          p.col = COL[q];
+        }
+      } else if (Math.random() < 0.08)
+        p.cur = POOL[Math.floor(Math.random() * POOL.length)];
       ctx.fillStyle = p.col;
-      ctx.globalAlpha = near ? (p.ring ? .45 + .3 * p.a : .88 + .12 * p.a) : .75;
-      ctx.shadowBlur = near && !p.ring ? 9 : 0; ctx.shadowColor = p.col;
+      ctx.globalAlpha = near
+        ? p.ring
+          ? 0.45 + 0.3 * p.a
+          : 0.88 + 0.12 * p.a
+        : 0.75;
+      ctx.shadowBlur = near && !p.ring ? 9 : 0;
+      ctx.shadowColor = p.col;
       ctx.fillText(near ? p.ch : p.cur, p.x, p.y);
     }
-    ctx.globalAlpha = 1; ctx.shadowBlur = 0;
+    ctx.globalAlpha = 1;
+    ctx.shadowBlur = 0;
   }
 
   function typeRole() {
-    const el = $('#type'), txt = el.textContent;
+    const el = $("#type"),
+      txt = el.textContent;
     if (reduce) return;
-    el.textContent = ''; let i = 0;
-    const n = () => { el.textContent = txt.slice(0, ++i); if (i < txt.length) setTimeout(n, 45); };
+    el.textContent = "";
+    let i = 0;
+    const n = () => {
+      el.textContent = txt.slice(0, ++i);
+      if (i < txt.length) setTimeout(n, 45);
+    };
     setTimeout(n, 900);
   }
 
-  cv.addEventListener('pointermove', e => { const r = cv.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
-  cv.addEventListener('pointerleave', () => { mouse.x = mouse.y = -999; });
-  cv.addEventListener('click', build);
-  addEventListener('resize', () => { if (innerWidth !== lastW || Math.abs(innerHeight - lastH) > 120) build(); });
-  new IntersectionObserver(e => { visible = e[0].isIntersecting; }).observe($('#inicio'));
+  cv.addEventListener("pointermove", (e) => {
+    const r = cv.getBoundingClientRect();
+    mouse.x = e.clientX - r.left;
+    mouse.y = e.clientY - r.top;
+  });
+  cv.addEventListener("pointerleave", () => {
+    mouse.x = mouse.y = -999;
+  });
+  cv.addEventListener("click", build);
+  addEventListener("resize", () => {
+    if (innerWidth !== lastW || Math.abs(innerHeight - lastH) > 120) build();
+  });
+  new IntersectionObserver((e) => {
+    visible = e[0].isIntersecting;
+  }).observe($("#inicio"));
 
-  const fontReady = Promise.race([document.fonts.load('700 40px "Source Serif 4"'), new Promise(r => setTimeout(r, 1500))]);
-  Promise.all([boot(), fontReady]).then(() => { build(); typeRole(); requestAnimationFrame(frame); });
+  const fontReady = Promise.race([
+    document.fonts.load('700 40px "Source Serif 4"'),
+    new Promise((r) => setTimeout(r, 1500)),
+  ]);
+  Promise.all([boot(), fontReady]).then(() => {
+    build();
+    typeRole();
+    requestAnimationFrame(frame);
+  });
 
   /* ---------- Aparición al hacer scroll ---------- */
-  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
-  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+  const io = new IntersectionObserver(
+    (es) =>
+      es.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add("in");
+          io.unobserve(e.target);
+        }
+      }),
+    { threshold: 0.12 },
+  );
+  document.querySelectorAll(".rv").forEach((el) => io.observe(el));
 
   /* ---------- Formulario de contacto ---------- */
   // Pega aquí la URL de tu API (Node.js + Express + Resend). Si queda vacío, se abre tu correo.
-  const API_URL = '';
-  const EMAIL = 'jc.espinozav.2010@gmail.com';
-  $('#form').addEventListener('submit', async e => {
+  const API_URL = "";
+  const EMAIL = "jc.sft.contac@gmail.com";
+  $("#form").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const f = e.target, msg = $('#msg');
+    const f = e.target,
+      msg = $("#msg");
     if (!f.reportValidity()) return;
-    const data = { nombre: f.nombre.value.trim(), correo: f.correo.value.trim(), mensaje: f.mensaje.value.trim() };
+    const data = {
+      nombre: f.nombre.value.trim(),
+      correo: f.correo.value.trim(),
+      mensaje: f.mensaje.value.trim(),
+    };
     if (!API_URL) {
-      location.href = `mailto:${EMAIL}?subject=${encodeURIComponent('Contacto desde el portafolio: ' + data.nombre)}&body=${encodeURIComponent(data.mensaje + '\n\n— ' + data.nombre + ' (' + data.correo + ')')}`;
-      msg.textContent = '> abriendo tu app de correo...'; return;
+      const w = open(`https://mail.google.com/mail/?view=cm&fs=1&to=${EMAIL}&su=${encodeURIComponent("Contacto desde el portafolio: " + data.nombre)}&body=${encodeURIComponent(data.mensaje + "\n\n— " + data.nombre + " (" + data.correo + ")")}`, "_blank");
+      if (w) w.opener = null;
+      msg.textContent = w ? "> abriendo Gmail..." : '> no se pudo abrir Gmail, usa "copiar correo" y escríbeme';
+      return;
     }
-    msg.textContent = '> enviando...';
+    msg.textContent = "> enviando...";
+    const btn = f.querySelector("button[type=submit]");
+    btn.disabled = true;
     try {
-      const r = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      const r = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
       if (!r.ok) throw new Error(r.status);
-      msg.textContent = '> mensaje enviado [ OK ]'; f.reset();
-    } catch (err) { msg.textContent = '> error al enviar, intenta de nuevo o escríbeme por correo'; }
+      msg.textContent = "> mensaje enviado [ OK ]";
+      f.reset();
+    } catch (err) {
+      msg.textContent =
+        "> error al enviar, intenta de nuevo o escríbeme por correo";
+    } finally {
+      btn.disabled = false;
+    }
   });
 
   /* ---------- Extras: progreso, nav activa, contadores, terminal ---------- */
-  const bar = $('#progress'), topBtn = $('#top');
-  const links = [...document.querySelectorAll('.nav nav a')], secs = links.map(a => document.querySelector(a.getAttribute('href')));
-  addEventListener('scroll', () => {
-    const max = document.documentElement.scrollHeight - innerHeight;
-    bar.style.width = (max > 0 ? scrollY / max * 100 : 0) + '%';
-    topBtn.classList.toggle('on', scrollY > innerHeight * .6);
-    let cur = 0; secs.forEach((s, i) => { if (s && s.getBoundingClientRect().top < innerHeight * .4) cur = i; });
-    links.forEach((a, i) => a.classList.toggle('act', i === cur));
-  }, { passive: true });
+  const bar = $("#progress"),
+    topBtn = $("#top");
+  let lastCur = -1;
+  const links = [...document.querySelectorAll(".nav nav a")],
+    secs = links.map((a) => document.querySelector(a.getAttribute("href")));
+  addEventListener(
+    "scroll",
+    () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      bar.style.width = (max > 0 ? (scrollY / max) * 100 : 0) + "%";
+      topBtn.classList.toggle("on", scrollY > innerHeight * 0.6);
 
-  const cio = new IntersectionObserver(es => es.forEach(e => {
-    if (!e.isIntersecting) return; cio.unobserve(e.target);
-    const el = e.target, n = +el.dataset.count; if (reduce) return;
-    let v = 0; el.textContent = 0; const s = () => { el.textContent = ++v; if (v < n) setTimeout(s, 180); }; s();
-  }), { threshold: .6 });
-  document.querySelectorAll('[data-count]').forEach(el => cio.observe(el));
+      let cur = 0;
+      const atBottom = max > 0 && scrollY + innerHeight >= document.documentElement.scrollHeight - 4;
 
-  document.querySelectorAll('.card').forEach(c => c.addEventListener('pointermove', e => {
-    const r = c.getBoundingClientRect(); c.style.setProperty('--mx', e.clientX - r.left + 'px'); c.style.setProperty('--my', e.clientY - r.top + 'px');
-  }));
+      if (atBottom && secs.length > 0) {
+        cur = secs.length - 1;
+      } else {
+        secs.forEach((s, i) => {
+          if (s && s.getBoundingClientRect().top < innerHeight * 0.4) cur = i;
+        });
+      }
+
+      links.forEach((a, i) => a.classList.toggle("act", i === cur));
+      if (cur !== lastCur) {
+        lastCur = cur;
+        const a = links[cur],
+          n = a.parentElement;
+        n.scrollTo({
+          left: a.offsetLeft - n.clientWidth / 2 + a.clientWidth / 2,
+          behavior: reduce ? "auto" : "smooth",
+        });
+      }
+    },
+    { passive: true },
+  );
+
+  const cio = new IntersectionObserver(
+    (es) =>
+      es.forEach((e) => {
+        if (!e.isIntersecting) return;
+        cio.unobserve(e.target);
+        const el = e.target,
+          n = +el.dataset.count;
+        if (reduce) return;
+        let v = 0;
+        el.textContent = 0;
+        const s = () => {
+          el.textContent = ++v;
+          if (v < n) setTimeout(s, 180);
+        };
+        s();
+      }),
+    { threshold: 0.6 },
+  );
+  document.querySelectorAll("[data-count]").forEach((el) => cio.observe(el));
+
+  document.querySelectorAll(".card").forEach((c) =>
+    c.addEventListener("pointermove", (e) => {
+      const r = c.getBoundingClientRect();
+      c.style.setProperty("--mx", e.clientX - r.left + "px");
+      c.style.setProperty("--my", e.clientY - r.top + "px");
+    }),
+  );
 
   const CMD = {
-    help: 'comandos: whoami · skills · projects · contact · github · clear',
-    whoami: 'Juan Carlos — estudiante de Desarrollo Web Full Stack',
-    skills: 'html5 · css3 · javascript · node.js · git  (estudiando: php, linux)',
-    projects: '1) consultorio luz ángeles  2) simulacros uni  3) mi portafolio',
+    help: "comandos: whoami · skills · projects · contact · github · ls · pwd · updates · clear  (↑ historial)",
+    whoami: "Juan Carlos — estudiante de Desarrollo Web Full Stack",
+    skills:
+      "html5 · css3 · javascript · node.js · git  (estudiando: php, linux)",
+    projects: "1) consultorio luz ángeles  2) simulacros uni  3) mi portafolio",
     contact: EMAIL,
-    github: 'github.com/jcexpineuxv2010-oss'
+    github: "github.com/jcexpineuxv2010-oss",
+    ls: "inicio/  sobre-mi/  habilidades/  camino/  proyectos/  actualizaciones/  contacto/",
+    pwd: "/home/jc/portafolio",
+    updates: "v2.3.0 — términos, privacidad, footer y actualizaciones (mira ./actualizaciones)",
   };
-  const out = $('#out'), inp = $('#shin');
-  $('#sh').addEventListener('submit', e => {
-    e.preventDefault(); const v = inp.value.trim().toLowerCase(); inp.value = ''; if (!v) return;
-    if (v === 'clear') { out.textContent = ''; return; }
+  const out = $("#out"),
+    inp = $("#shin"),
+    hist = [];
+  let hi = 0;
+  $("#sh").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const v = inp.value.trim().toLowerCase();
+    inp.value = "";
+    if (!v) return;
+    hist.push(v);
+    hi = hist.length;
+    if (v === "clear") {
+      out.textContent = "";
+      return;
+    }
     let r = CMD[v] || `comando no encontrado: ${v} (prueba help)`;
-    if (v === 'sudo hire jc') { r = '[ OK ] permiso concedido. te llevo a ./contacto ...'; setTimeout(() => { location.hash = '#contacto'; }, 900); }
-    out.textContent += `$ ${v}\n${r}\n`; out.scrollTop = out.scrollHeight;
+    if (v === "sudo hire jc") {
+      r = "[ OK ] permiso concedido. te llevo a ./contacto ...";
+      setTimeout(() => {
+        location.hash = "#contacto";
+      }, 900);
+    }
+    out.textContent += `$ ${v}\n${r}\n`;
+    out.scrollTop = out.scrollHeight;
   });
-  $('#copy').addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(EMAIL); $('#msg').textContent = '> correo copiado [ OK ]'; }
-    catch (e) { $('#msg').textContent = '> ' + EMAIL; }
+  inp.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowUp" && hist.length) {
+      e.preventDefault();
+      hi = Math.max(0, hi - 1);
+      inp.value = hist[hi];
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      hi = Math.min(hist.length, hi + 1);
+      inp.value = hist[hi] || "";
+    }
+  });
+  $("#copy").addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+      $("#msg").textContent = "> correo copiado [ OK ]";
+    } catch (e) {
+      $("#msg").textContent = "> " + EMAIL;
+    }
   });
 
   /* ---------- Lluvia de código en toda la web (colores de VS Code) ---------- */
-  const rc = $('#rain'), rx = rc.getContext('2d');
-  let RW, RH, drops = [];
+  const rc = $("#rain"),
+    rx = rc.getContext("2d");
+  let RW,
+    RH,
+    drops = [];
   function rainSize() {
     const dpr = Math.min(devicePixelRatio || 1, 2);
-    RW = innerWidth; RH = innerHeight; rc.width = RW * dpr; rc.height = RH * dpr; rx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    RW = innerWidth;
+    RH = innerHeight;
+    rc.width = RW * dpr;
+    rc.height = RH * dpr;
+    rx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   function rainInit() {
     rainSize();
-    const n = Math.min(170, Math.floor(RW * RH / 6500));
-    drops = Array.from({ length: n }, () => ({ x: rnd(0, RW), y: rnd(0, RH), s: reduce ? 0 : rnd(.2, .7), sz: rnd(10, 17), a: rnd(.1, .32), q: Math.floor(Math.random() * CODE.length), ph: rnd(0, 6.28) }));
+    const n = Math.min(170, Math.floor((RW * RH) / 6500));
+    drops = Array.from({ length: n }, () => ({
+      x: rnd(0, RW),
+      y: rnd(0, RH),
+      s: reduce ? 0 : rnd(0.2, 0.7),
+      sz: rnd(10, 17),
+      a: rnd(0.1, 0.32),
+      q: Math.floor(Math.random() * CODE.length),
+      ph: rnd(0, 6.28),
+    }));
   }
   function rainDraw(now) {
-    rx.clearRect(0, 0, RW, RH); rx.textAlign = 'center'; rx.textBaseline = 'middle';
+    rx.clearRect(0, 0, RW, RH);
+    rx.textAlign = "center";
+    rx.textBaseline = "middle";
     for (const d of drops) {
-      d.y += d.s; d.x += Math.sin(now / 1500 + d.ph) * (reduce ? 0 : .12);
-      if (d.y > RH + 14) { d.y = -14; d.x = rnd(0, RW); }
-      if (!reduce && Math.random() < .006) d.q = Math.floor(Math.random() * CODE.length);
+      d.y += d.s;
+      d.x += Math.sin(now / 1500 + d.ph) * (reduce ? 0 : 0.12);
+      if (d.y > RH + 14) {
+        d.y = -14;
+        d.x = rnd(0, RW);
+      }
+      if (!reduce && Math.random() < 0.006)
+        d.q = Math.floor(Math.random() * CODE.length);
       rx.font = `500 ${d.sz}px "JetBrains Mono",ui-monospace,monospace`;
-      rx.fillStyle = COL[d.q]; rx.globalAlpha = d.a; rx.fillText(codeCh(d.q), d.x, d.y);
+      rx.fillStyle = COL[d.q];
+      rx.globalAlpha = d.a;
+      rx.fillText(codeCh(d.q), d.x, d.y);
     }
     rx.globalAlpha = 1;
   }
-  function rainLoop(now) { requestAnimationFrame(rainLoop); if (!document.hidden) rainDraw(now); }
+  function rainLoop(now) {
+    requestAnimationFrame(rainLoop);
+    if (!document.hidden) rainDraw(now);
+  }
   rainInit();
-  if (reduce) rainDraw(0); else requestAnimationFrame(rainLoop);
+  if (reduce) rainDraw(0);
+  else requestAnimationFrame(rainLoop);
   let rw = innerWidth;
-  addEventListener('resize', () => { if (Math.abs(innerWidth - rw) > 80) { rw = innerWidth; rainInit(); } else rainSize(); });
+  addEventListener("resize", () => {
+    if (Math.abs(innerWidth - rw) > 80) {
+      rw = innerWidth;
+      rainInit();
+    } else rainSize();
+  });
+  /* ---------- Estado de pestaña: conexión perdida / restablecida ---------- */
+  const tituloOriginal = document.title;
+  let toastTimer = null;
+
+  function mostrarToastReconexion() {
+    let toast = $("#toast-reconexion");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "toast-reconexion";
+      toast.setAttribute("role", "status");
+      toast.innerHTML =
+        '<span class="toast-cmd">// CONEXIÓN RESTABLECIDA</span>' +
+        '<span class="toast-sub">Bienvenido/a de vuelta a la casa.</span>';
+      document.body.appendChild(toast);
+    }
+
+    toast.classList.remove("show");
+    void toast.offsetWidth; // reinicia animación si vuelve rápido
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      toast.classList.remove("show");
+    }, 3500);
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      document.title = "// conexión perdida_";
+    } else {
+      document.title = tituloOriginal;
+      mostrarToastReconexion();
+    }
+  });
 })();
